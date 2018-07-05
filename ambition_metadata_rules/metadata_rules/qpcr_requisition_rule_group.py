@@ -1,4 +1,4 @@
-from ambition_labs.panels import qpcr_blood_panel, qpcr_csf_panel, qpcr23_blood_panel
+from ambition_labs.panels import qpcr_blood_panel, qpcr_csf_panel, qpcr24_blood_panel
 from edc_metadata import NOT_REQUIRED, REQUIRED
 from edc_metadata_rules import RequisitionRule, RequisitionRuleGroup, register
 
@@ -17,11 +17,11 @@ class QpcrRequisitionRuleGroup(RequisitionRuleGroup):
         alternative=NOT_REQUIRED,
         target_panels=[qpcr_blood_panel])
 
-    require_qpcr23_blood = RequisitionRule(
+    require_qpcr24_blood = RequisitionRule(
         predicate=pc.func_require_qpcr_requisition,
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_panels=[qpcr23_blood_panel])
+        target_panels=[qpcr24_blood_panel])
 
     require_qpcr_csf = RequisitionRule(
         predicate=pc.func_require_qpcr_requisition,

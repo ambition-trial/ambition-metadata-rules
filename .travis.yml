@@ -11,10 +11,8 @@ branches:
   - develop
 install:
 - pip install --upgrade pip
-- pip install pycups
 - pip install flake8
 - pip install coveralls
-- pip install -e .
 - pip install -r requirements.txt
 before_script:
 - flake8 ambition_metadata_rules
@@ -23,6 +21,3 @@ script:
 - coverage run --source=ambition_metadata_rules manage.py test
 after_success:
 - coveralls
-notifications:
-  slack:
-    secure: PqWRXfUqYJLNkPFbMF3axwoJNa4z1fLoCnU/3JrNqt3k+Wmy/nsltZo1If1s3kTquuwUr70fZINExm3RoHGqxmN5wevFTWWa89l9BsPjzAKaf3TSGwgoHze1GrxdV0xesjtL5ODJaU5t8Qr2UWsb6BYPiYoGCx6IHl3YrsGacwu78EFQuynYc+/0yT3iB+uEVDQuDSFly8a5l+j0w2eUC4VMBhIlVS/Uw/v7JnKxOUEmsEhC/JlhPI15ymjiAnhJrFoEEtfBV4SkbTZ6y52WFUcFqSD829dBFB7SHCyJ1kdgp3aoCMmifH+iDBX2b7aSCQb0PZsDSB9165NepeK4G6VS6XswsKDyPaQFFlARoBlJeRi2QJ9BVDjKhyO11tNNrR2y+HkhyqGSutgwrupP2yPMkigQLDGYYixkWNdM5GBBkD/b7gQXlUQsU8VrSOOi9G3+mbkuuehBhSkt2kjMCDdOgHqvV3w2lvPl2rR1EHP4NMOA+deyYRwKbmPucYhH+eRbsGNaSbrgGnoe5Y2nISMjDmEL68S88Ao0bFI7MIF9cit8+wpUJNhcjo+RJZlEAuBtLhXjjBzpGIbnw8TcJuIl71SvjEj44t3G0aDHhGg+BdVdhNeWSCK+UrAik+t7VkGeTnb5Gx39qY9VpApnjSJCcR8T2BlvxHpWfXNXR4Q=
