@@ -1,11 +1,11 @@
+from ambition_rando.constants import CONTROL
+from ambition_rando.models.randomization_list import RandomizationList
+from ambition_sites.get_site_id import get_site_id
 from ambition_visit_schedule import DAY1
 from dateutil.relativedelta import relativedelta
 from django.contrib.sites.models import Site
 from edc_constants.constants import YES
 from edc_metadata_rules import PredicateCollection
-from ambition_sites.get_site_id import get_site_id
-from ambition_rando.models.randomization_list import RandomizationList
-from ambition_rando.constants import CONTROL
 
 
 class Predicates(PredicateCollection):
@@ -19,8 +19,8 @@ class Predicates(PredicateCollection):
             subject_identifier=visit.subject_identifier,
             report_datetime=visit.report_datetime,
             field_name=field)
-        return ((visit.report_datetime - relativedelta(months=3)).date() >
-                (values[0] or (visit.report_datetime).date()))
+        return ((visit.report_datetime - relativedelta(months=3)).date()
+                > (values[0] or (visit.report_datetime).date()))
 
     def blood_result_abnormal(self, visit=None):
         values = self.exists(
