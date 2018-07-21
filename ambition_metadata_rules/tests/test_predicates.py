@@ -1,37 +1,35 @@
-from django.apps import apps as django_apps
+from ambition_sites import fqdn, ambition_sites, get_site_id
+from ambition_rando.tests import AmbitionTestCaseMixin
 from ambition_visit_schedule import DAY1, DAY3, DAY5
-from edc_base.sites.utils import add_or_update_django_sites
 from arrow.arrow import Arrow
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from django.test import TestCase
+from django.apps import apps as django_apps
+from django.test import TestCase, tag
 from django.test.utils import override_settings
+from edc_base.sites.utils import add_or_update_django_sites
 from edc_reference import LongitudinalRefset
 from edc_reference.tests import ReferenceTestHelper
 
 from ..predicates import Predicates
+from ambition_rando.randomizer import Randomizer
+from ambition_rando.models.randomization_list import RandomizationList
+from django.contrib.sites.models import Site
+from ambition_rando.constants import CONTROL, SINGLE_DOSE
+from edc_base.utils import get_utcnow
+from pprint import pprint
 
 
-class TestPredicates(TestCase):
+class TestPredicates(AmbitionTestCaseMixin, TestCase):
 
     reference_helper_cls = ReferenceTestHelper
     visit_model = 'ambition_subject.subjectvisit'
     reference_model = 'edc_reference.reference'
     app_label = 'ambition_subject'
+    import_randomization_list = True
 
     @classmethod
     def setUpClass(cls):
-        # copied from ambition ... may not be up to date!
-        fqdn = 'ambition.clinicedc.org'
-        ambition_sites = (
-            (1, 'reviewer'),
-            (10, 'gaborone'),
-            (20, 'harare'),
-            (30, 'lilongwe'),
-            (40, 'blantyre'),
-            (50, 'capetown'),
-            (60, 'kampala'),
-        )
         add_or_update_django_sites(
             apps=django_apps, sites=ambition_sites, fqdn=fqdn)
         return super().setUpClass()
@@ -39,8 +37,17 @@ class TestPredicates(TestCase):
     def tearDown(self):
         super().tearDown()
 
-    def setUp(self):
+    def update_randomization_list(self, arm):
+        site = Site.objects.get_current()
+        RandomizationList.objects.update(
+            site_name=site.name,
+            subject_identifier=None)
+        rando = RandomizationList.objects.filter(
+            site_name=site.name, drug_assignment=arm).order_by('sid').first()
+        rando.subject_identifier = self.subject_identifier
+        rando.save()
 
+    def setUp(self):
         self.subject_identifier = '111111111'
         self.reference_helper = self.reference_helper_cls(
             visit_model=self.visit_model,
@@ -103,24 +110,81 @@ class TestPredicates(TestCase):
             viral_load_date=(self.subject_visits[0].report_datetime).date())
         self.assertFalse(pc.func_require_vl(self.subject_visits[0]))
 
-    @override_settings(SITE_ID=40)
+    @tag('2')
+    @override_settings(SITE_ID=get_site_id('blantyre'))
     def test_pkpd_site_eq_blantyre(self):
         pc = Predicates()
+        self.update_randomization_list(CONTROL)
         self.assertTrue(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
-
-    @override_settings(SITE_ID=20)
-    def test_pkpd_site_eq_harare(self):
-        pc = Predicates()
+        self.update_randomization_list(SINGLE_DOSE)
         self.assertFalse(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
 
-    @override_settings(SITE_ID=10)
+    @override_settings(SITE_ID=get_site_id('harare'))
+    def test_pkpd_site_eq_harare(self):
+        pc = Predicates()
+        self.update_randomization_list(CONTROL)
+        self.assertFalse(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
+        self.update_randomization_list(SINGLE_DOSE)
+        self.assertFalse(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
+
+    @override_settings(SITE_ID=get_site_id('gaborone'))
+    def test_pkpd_site_eq_gaborone(self):
+        pc = Predicates()
+        self.update_randomization_list(CONTROL)
+        self.assertFalse(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
+        self.update_randomization_list(SINGLE_DOSE)
+        self.assertFalse(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
+
+    @override_settings(SITE_ID=get_site_id('capetown'))
+    def test_pkpd_site_eq_capetown(self):
+        pc = Predicates()
+        self.update_randomization_list(CONTROL)
+        self.assertFalse(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
+        self.update_randomization_list(SINGLE_DOSE)
+        self.assertFalse(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
+
+    @override_settings(SITE_ID=get_site_id('lilongwe'))
+    def test_pkpd_site_eq_lilongwe(self):
+        pc = Predicates()
+        self.update_randomization_list(CONTROL)
+        self.assertFalse(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
+        self.update_randomization_list(SINGLE_DOSE)
+        self.assertFalse(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
+
+    @override_settings(SITE_ID=get_site_id('kampala'))
+    def test_pkpd_site_eq_kampala(self):
+        pc = Predicates()
+        self.update_randomization_list(CONTROL)
+        self.assertFalse(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
+        self.update_randomization_list(SINGLE_DOSE)
+        self.assertFalse(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
+
+    @override_settings(SITE_ID=get_site_id('gaborone'))
     def test_qpcr_requisition_site_eq_gaborone(self):
         pc = Predicates()
+        self.update_randomization_list(CONTROL)
+        self.assertTrue(
+            pc.func_require_qpcr_requisition(self.subject_visits[0]))
+        self.update_randomization_list(SINGLE_DOSE)
         self.assertTrue(
             pc.func_require_qpcr_requisition(self.subject_visits[0]))
 
-    @override_settings(SITE_ID=20)
+    @override_settings(SITE_ID=get_site_id('harare'))
     def test_qpcr_requisition_site_eq_harare(self):
         pc = Predicates()
+        self.update_randomization_list(CONTROL)
+        self.assertFalse(
+            pc.func_require_qpcr_requisition(self.subject_visits[0]))
+        self.update_randomization_list(SINGLE_DOSE)
+        self.assertFalse(
+            pc.func_require_qpcr_requisition(self.subject_visits[0]))
+
+    @override_settings(SITE_ID=get_site_id('capetown'))
+    def test_qpcr_24_requisition_site_eq_cape_town(self):
+        pc = Predicates()
+        self.update_randomization_list(CONTROL)
+        self.assertFalse(
+            pc.func_require_qpcr_requisition(self.subject_visits[0]))
+        self.update_randomization_list(SINGLE_DOSE)
         self.assertFalse(
             pc.func_require_qpcr_requisition(self.subject_visits[0]))

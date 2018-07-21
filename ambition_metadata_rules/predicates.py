@@ -1,7 +1,9 @@
+from ambition_rando.constants import CONTROL
+from ambition_rando.models.randomization_list import RandomizationList
+from ambition_sites.get_site_id import get_site_id
 from ambition_visit_schedule import DAY1
 from dateutil.relativedelta import relativedelta
 from django.contrib.sites.models import Site
-from edc_base.sites import SiteError
 from edc_constants.constants import YES
 from edc_metadata_rules import PredicateCollection
 
@@ -17,8 +19,8 @@ class Predicates(PredicateCollection):
             subject_identifier=visit.subject_identifier,
             report_datetime=visit.report_datetime,
             field_name=field)
-        return ((visit.report_datetime - relativedelta(months=3)).date() >
-                (values[0] or (visit.report_datetime).date()))
+        return ((visit.report_datetime - relativedelta(months=3)).date()
+                > (values[0] or (visit.report_datetime).date()))
 
     def blood_result_abnormal(self, visit=None):
         values = self.exists(
@@ -56,19 +58,15 @@ class Predicates(PredicateCollection):
                 visit=visit, field='viral_load_date')
         return False
 
+# TODO: confirm this logic with study team
     def func_require_pkpd_stopcm(self, visit, **kwargs):
+        """Required for CONTROL subjects in Blantyre only.
+        """
+        rando = RandomizationList.objects.get(
+            subject_identifier=visit.subject_identifier)
         site = Site.objects.get_current()
-        if site.id == 40 and site.name != 'blantyre':
-            raise SiteError(
-                f'Expected site 40 to be "blantyre". Got {site.name}.')
-        return site.id == 40
+        return site.id == get_site_id('blantyre') and rando.drug_assignment == CONTROL
 
     def func_require_qpcr_requisition(self, visit, **kwargs):
         site = Site.objects.get_current()
-        if site.id == 40 and site.name != 'blantyre':
-            raise SiteError(
-                f'Expected site 40 to be "blantyre". Got {site.name}.')
-        if site.id == 10 and site.name != 'gaborone':
-            raise SiteError(
-                f'Expected site 10 to be "gaborone". Got {site.name}.')
-        return site.id == 40 or site.id == 10
+        return site.id == get_site_id('blantyre') or site.id == get_site_id('gaborone')

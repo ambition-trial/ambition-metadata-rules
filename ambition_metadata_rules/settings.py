@@ -15,6 +15,7 @@ import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ETC_DIR = os.path.join(BASE_DIR, 'etc')
 SITE_ID = 40
 REVIEWER_SITE_ID = 0
 
@@ -42,17 +43,26 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django_crypto_fields.apps.AppConfig',
     'django_revision.apps.AppConfig',
+    'edc_action_item.apps.AppConfig',
+    'edc_appointment.apps.AppConfig',
     'edc_base.apps.AppConfig',
     'edc_lab.apps.AppConfig',
     'edc_visit_tracking.apps.AppConfig',
     'edc_visit_schedule.apps.AppConfig',
     'edc_identifier.apps.AppConfig',
     'edc_device.apps.AppConfig',
+    'edc_offstudy.apps.AppConfig',
+    'edc_protocol.apps.AppConfig',
     'edc_reference.apps.AppConfig',
     'edc_metadata_rules.apps.AppConfig',
     'ambition_labs.apps.AppConfig',
     'ambition_reference.apps.AppConfig',
+    'ambition_prn.apps.AppConfig',
+    'ambition_rando.apps.AppConfig',
     'ambition_visit_schedule.apps.AppConfig',
+    'ambition_screening.apps.AppConfig',
+    'ambition_subject.apps.AppConfig',
+    'ambition_metadata_rules.apps.EdcFacilityAppConfig',
     'ambition_metadata_rules.apps.EdcMetadataAppConfig',
     'ambition_metadata_rules.apps.AppConfig',
 ]
@@ -65,6 +75,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'edc_dashboard.middleware.DashboardMiddleware',
+    'edc_subject_dashboard.middleware.DashboardMiddleware',
 ]
 
 ROOT_URLCONF = 'ambition_metadata_rules.urls'
@@ -131,13 +143,22 @@ USE_L10N = True
 
 USE_TZ = True
 
-KEY_PATH = os.path.join(BASE_DIR, 'crypto_fields')
 STATIC_ROOT = os.path.join(BASE_DIR, 'ambition_metadata_rules', 'static')
-DEFAULT_APPOINTMENT_MODEL = 'ambition_subject.appointment'
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
+COUNTRY = 'botswana'
+HOLIDAY_FILE = os.path.join(
+    BASE_DIR, 'ambition_metadata_rules', 'tests', 'holidays.csv')
 
 STATIC_URL = '/static/'
+
+RANDOMIZATION_LIST_PATH = os.path.join(
+    BASE_DIR, 'ambition_metadata_rules', 'tests', 'test_randomization_list.csv')
+
+DASHBOARD_URL_NAMES = {
+    'subject_models_url': 'subject_models_url',
+    'subject_listboard_url': 'ambition_dashboard:subject_listboard_url',
+    'screening_listboard_url': 'ambition_dashboard:screening_listboard_url',
+    'subject_dashboard_url': 'ambition_dashboard:subject_dashboard_url',
+}
 
 if 'test' in sys.argv:
 
