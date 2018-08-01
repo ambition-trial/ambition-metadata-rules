@@ -65,8 +65,8 @@ class Predicates(PredicateCollection):
         rando = RandomizationList.objects.get(
             subject_identifier=visit.subject_identifier)
         site = Site.objects.get_current()
-        return site.id == get_site_id('blantyre') and rando.drug_assignment == CONTROL
+        return site.name == 'blantyre' and rando.drug_assignment == CONTROL
 
     def func_require_qpcr_requisition(self, visit, **kwargs):
         site = Site.objects.get_current()
-        return site.id == get_site_id('blantyre') or site.id == get_site_id('gaborone')
+        return site.name == 'blantyre' or site.name == 'gaborone'
