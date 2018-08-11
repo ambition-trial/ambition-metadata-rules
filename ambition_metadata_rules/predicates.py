@@ -1,6 +1,5 @@
 from ambition_rando.constants import CONTROL
 from ambition_rando.models.randomization_list import RandomizationList
-from ambition_sites.get_site_id import get_site_id
 from ambition_visit_schedule import DAY1
 from dateutil.relativedelta import relativedelta
 from django.contrib.sites.models import Site
