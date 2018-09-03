@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'edc_device.apps.AppConfig',
     'edc_offstudy.apps.AppConfig',
     'edc_protocol.apps.AppConfig',
+    'edc_registration.apps.AppConfig',
     'edc_reference.apps.AppConfig',
     'edc_metadata_rules.apps.AppConfig',
     'ambition_labs.apps.AppConfig',

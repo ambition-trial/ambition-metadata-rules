@@ -1,10 +1,13 @@
-from ambition_sites import fqdn, ambition_sites, get_site_id
+from ambition_rando.constants import CONTROL, SINGLE_DOSE
+from ambition_rando.models.randomization_list import RandomizationList
 from ambition_rando.tests import AmbitionTestCaseMixin
+from ambition_sites import fqdn, ambition_sites, get_site_id
 from ambition_visit_schedule import DAY1, DAY3, DAY5
 from arrow.arrow import Arrow
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from django.apps import apps as django_apps
+from django.contrib.sites.models import Site
 from django.test import TestCase, tag
 from django.test.utils import override_settings
 from edc_base.sites.utils import add_or_update_django_sites
@@ -12,21 +15,15 @@ from edc_reference import LongitudinalRefset
 from edc_reference.tests import ReferenceTestHelper
 
 from ..predicates import Predicates
-from ambition_rando.randomizer import Randomizer
-from ambition_rando.models.randomization_list import RandomizationList
-from django.contrib.sites.models import Site
-from ambition_rando.constants import CONTROL, SINGLE_DOSE
-from edc_base.utils import get_utcnow
-from pprint import pprint
 
 
 class TestPredicates(AmbitionTestCaseMixin, TestCase):
 
-    reference_helper_cls = ReferenceTestHelper
-    visit_model = 'ambition_subject.subjectvisit'
-    reference_model = 'edc_reference.reference'
     app_label = 'ambition_subject'
     import_randomization_list = True
+    reference_helper_cls = ReferenceTestHelper
+    reference_model = 'edc_reference.reference'
+    visit_model = 'ambition_subject.subjectvisit'
 
     @classmethod
     def setUpClass(cls):
@@ -110,7 +107,6 @@ class TestPredicates(AmbitionTestCaseMixin, TestCase):
             viral_load_date=(self.subject_visits[0].report_datetime).date())
         self.assertFalse(pc.func_require_vl(self.subject_visits[0]))
 
-    @tag('2')
     @override_settings(SITE_ID=get_site_id('blantyre'))
     def test_pkpd_site_eq_blantyre(self):
         pc = Predicates()
