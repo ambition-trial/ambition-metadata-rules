@@ -57,14 +57,13 @@ class Predicates(PredicateCollection):
                 visit=visit, field='viral_load_date')
         return False
 
-# TODO: confirm this logic with study team
     def func_require_pkpd_stopcm(self, visit, **kwargs):
-        """Required for CONTROL subjects in Blantyre only.
+        """Required for ALL subjects in Blantyre only.
         """
-        rando = RandomizationList.objects.get(
-            subject_identifier=visit.subject_identifier)
+        # Made available to all subjects insread of just CONTROL
+        # subjects. See redmine issue 33
         site = Site.objects.get_current()
-        return site.name == 'blantyre' and rando.drug_assignment == CONTROL
+        return site.name == 'blantyre'
 
     def func_require_qpcr_requisition(self, visit, **kwargs):
         site = Site.objects.get_current()
