@@ -34,7 +34,7 @@ setup(
         'ambition-screening',
         'ambition-subject',
         'ambition-reference',
-        'ambition-validators',
+        'ambition_form_validators',
         'ambition-visit-schedule',
         'edc-action-item',
         'edc-base',
