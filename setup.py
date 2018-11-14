@@ -28,6 +28,7 @@ setup(
     install_requires=[
         'ambition-ae',
         'ambition-labs',
+        'ambition-lists',
         'ambition-prn',
         'ambition-rando',
         'ambition-sites',

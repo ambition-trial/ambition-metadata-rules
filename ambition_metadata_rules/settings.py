@@ -56,7 +56,9 @@ INSTALLED_APPS = [
     'edc_registration.apps.AppConfig',
     'edc_reference.apps.AppConfig',
     'edc_metadata_rules.apps.AppConfig',
+    'edc_notification.apps.AppConfig',
     'ambition_labs.apps.AppConfig',
+    'ambition_lists.apps.AppConfig',
     'ambition_reference.apps.AppConfig',
     'ambition_prn.apps.AppConfig',
     'ambition_rando.apps.AppConfig',
@@ -160,6 +162,9 @@ DASHBOARD_URL_NAMES = {
     'screening_listboard_url': 'ambition_dashboard:screening_listboard_url',
     'subject_dashboard_url': 'ambition_dashboard:subject_dashboard_url',
 }
+
+EMAIL_ENABLED = False
+EMAIL_CONTACTS = {}
 
 if 'test' in sys.argv:
 

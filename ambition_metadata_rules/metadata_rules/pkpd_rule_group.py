@@ -10,7 +10,7 @@ app_label = 'ambition_subject'
 pc = Predicates()
 
 
-@register()
+# @register()
 class PkPdRuleGroup(CrfRuleGroup):
 
     pkpd = CrfRule(
