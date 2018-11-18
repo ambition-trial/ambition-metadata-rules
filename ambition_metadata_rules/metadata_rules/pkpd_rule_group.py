@@ -11,19 +11,6 @@ pc = Predicates()
 
 
 @register()
-class PkPdRuleGroup(CrfRuleGroup):
-
-    pkpd = CrfRule(
-        predicate=pc.func_require_pkpd_stopcm,
-        consequence=REQUIRED,
-        alternative=NOT_REQUIRED,
-        target_models=[f'{app_label}.pkpdcrf'])
-
-    class Meta:
-        app_label = app_label
-
-
-@register()
 class PkPdRequisitionRuleGroup(RequisitionRuleGroup):
 
     require_pk_plasma_t2 = RequisitionRule(

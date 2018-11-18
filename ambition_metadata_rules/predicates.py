@@ -60,7 +60,7 @@ class Predicates(PredicateCollection):
     def func_require_pkpd_stopcm(self, visit, **kwargs):
         """Required for ALL subjects in Blantyre only.
         """
-        # Made available to all subjects insread of just CONTROL
+        # Made available to all subjects instead of just CONTROL
         # subjects. See redmine issue 33
         site = Site.objects.get_current()
         return site.name == 'blantyre'
