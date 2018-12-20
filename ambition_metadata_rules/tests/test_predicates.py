@@ -111,9 +111,9 @@ class TestPredicates(AmbitionTestCaseMixin, TestCase):
     def test_pkpd_site_eq_blantyre(self):
         pc = Predicates()
         self.update_randomization_list(CONTROL)
-        self.assertTrue(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
+        self.assertFalse(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
         self.update_randomization_list(SINGLE_DOSE)
-        self.assertTrue(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
+        self.assertFalse(pc.func_require_pkpd_stopcm(self.subject_visits[0]))
 
     @override_settings(SITE_ID=get_site_id('harare'))
     def test_pkpd_site_eq_harare(self):
