@@ -62,8 +62,11 @@ class Predicates(PredicateCollection):
         """
         # Made available to all subjects instead of just CONTROL
         # subjects. See redmine issue 33
-        site = Site.objects.get_current()
-        return site.name == 'blantyre'
+
+        # removed completely, see Redmine #70
+        # site = Site.objects.get_current()
+        # return site.name == 'blantyre'
+        return False
 
     def func_require_qpcr_requisition(self, visit, **kwargs):
         site = Site.objects.get_current()
