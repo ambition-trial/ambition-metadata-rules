@@ -1,5 +1,4 @@
 [run]
-omit =
-    */wsgi.py
-    setup.py
-    manage.py
+include = ambition_metadata_rules/*
+omit = ambition_metadata_rules/tests/*,ambition_metadata_rules/migrations/*
+branch = 1
