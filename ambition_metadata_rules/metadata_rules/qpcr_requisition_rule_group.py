@@ -4,7 +4,7 @@ from edc_metadata_rules import RequisitionRule, RequisitionRuleGroup, register
 
 from ..predicates import Predicates
 
-app_label = 'ambition_subject'
+app_label = "ambition_subject"
 pc = Predicates()
 
 
@@ -15,20 +15,23 @@ class QpcrRequisitionRuleGroup(RequisitionRuleGroup):
         predicate=pc.func_require_qpcr_requisition,
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_panels=[qpcr_blood_panel])
+        target_panels=[qpcr_blood_panel],
+    )
 
     require_qpcr24_blood = RequisitionRule(
         predicate=pc.func_require_qpcr_requisition,
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_panels=[qpcr24_blood_panel])
+        target_panels=[qpcr24_blood_panel],
+    )
 
     require_qpcr_csf = RequisitionRule(
         predicate=pc.func_require_qpcr_requisition,
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_panels=[qpcr_csf_panel])
+        target_panels=[qpcr_csf_panel],
+    )
 
     class Meta:
         app_label = app_label
-        requisition_model = f'{app_label}.subjectrequisition'
+        requisition_model = f"{app_label}.subjectrequisition"
