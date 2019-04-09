@@ -44,7 +44,6 @@ setup(
         'ambition_form_validators',
         'ambition-visit-schedule',
         'edc-action-item',
-        'edc-base',
         'edc-metadata',
         'edc-metadata-rules',
         'edc-offstudy',
