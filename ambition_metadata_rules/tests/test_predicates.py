@@ -29,17 +29,14 @@ class TestPredicates(AmbitionTestCaseMixin, TestCase):
 
     @classmethod
     def setUpClass(cls):
-        add_or_update_django_sites(
-            apps=django_apps, sites=ambition_sites, fqdn=fqdn)
+        add_or_update_django_sites(apps=django_apps, sites=ambition_sites, fqdn=fqdn)
         return super().setUpClass()
 
     def update_randomization_list(self, arm):
         site = Site.objects.get_current()
-        RandomizationList.objects.update(
-            site_name=site.name, subject_identifier=None)
+        RandomizationList.objects.update(site_name=site.name, subject_identifier=None)
         rando = (
-            RandomizationList.objects.filter(
-                site_name=site.name, drug_assignment=arm)
+            RandomizationList.objects.filter(site_name=site.name, drug_assignment=arm)
             .order_by("sid")
             .first()
         )
@@ -94,8 +91,7 @@ class TestPredicates(AmbitionTestCaseMixin, TestCase):
             visit_code=self.subject_visits[0].visit_code,
             timepoint=self.subject_visits[0].timepoint,
             cd4_date=(
-                self.subject_visits[0].report_datetime -
-                relativedelta(months=4)
+                self.subject_visits[0].report_datetime - relativedelta(months=4)
             ).date(),
         )
         self.assertTrue(pc.func_require_cd4(self.subject_visits[0]))
@@ -123,8 +119,7 @@ class TestPredicates(AmbitionTestCaseMixin, TestCase):
             visit_code=self.subject_visits[0].visit_code,
             timepoint=self.subject_visits[0].timepoint,
             viral_load_date=(
-                self.subject_visits[0].report_datetime -
-                relativedelta(months=4)
+                self.subject_visits[0].report_datetime - relativedelta(months=4)
             ).date(),
         )
         self.assertTrue(pc.func_require_vl(self.subject_visits[0]))
@@ -194,28 +189,22 @@ class TestPredicates(AmbitionTestCaseMixin, TestCase):
     def test_qpcr_requisition_site_eq_gaborone(self):
         pc = Predicates()
         self.update_randomization_list(CONTROL)
-        self.assertTrue(pc.func_require_qpcr_requisition(
-            self.subject_visits[0]))
+        self.assertTrue(pc.func_require_qpcr_requisition(self.subject_visits[0]))
         self.update_randomization_list(SINGLE_DOSE)
-        self.assertTrue(pc.func_require_qpcr_requisition(
-            self.subject_visits[0]))
+        self.assertTrue(pc.func_require_qpcr_requisition(self.subject_visits[0]))
 
     @override_settings(SITE_ID=get_site_id("harare", sites=ambition_sites))
     def test_qpcr_requisition_site_eq_harare(self):
         pc = Predicates()
         self.update_randomization_list(CONTROL)
-        self.assertFalse(pc.func_require_qpcr_requisition(
-            self.subject_visits[0]))
+        self.assertFalse(pc.func_require_qpcr_requisition(self.subject_visits[0]))
         self.update_randomization_list(SINGLE_DOSE)
-        self.assertFalse(pc.func_require_qpcr_requisition(
-            self.subject_visits[0]))
+        self.assertFalse(pc.func_require_qpcr_requisition(self.subject_visits[0]))
 
     @override_settings(SITE_ID=get_site_id("capetown", sites=ambition_sites))
     def test_qpcr_24_requisition_site_eq_cape_town(self):
         pc = Predicates()
         self.update_randomization_list(CONTROL)
-        self.assertFalse(pc.func_require_qpcr_requisition(
-            self.subject_visits[0]))
+        self.assertFalse(pc.func_require_qpcr_requisition(self.subject_visits[0]))
         self.update_randomization_list(SINGLE_DOSE)
-        self.assertFalse(pc.func_require_qpcr_requisition(
-            self.subject_visits[0]))
+        self.assertFalse(pc.func_require_qpcr_requisition(self.subject_visits[0]))
