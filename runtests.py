@@ -34,6 +34,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
         'django_crypto_fields.apps.AppConfig',
         'django_revision.apps.AppConfig',
         'edc_action_item.apps.AppConfig',
+        'edc_adverse_event.apps.AppConfig',
         'edc_appointment.apps.AppConfig',
         'edc_lab.apps.AppConfig',
         'edc_visit_tracking.apps.AppConfig',
