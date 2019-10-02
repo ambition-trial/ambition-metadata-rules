@@ -47,6 +47,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
         'edc_reference.apps.AppConfig',
         'edc_metadata_rules.apps.AppConfig',
         'edc_notification.apps.AppConfig',
+        "edc_sites.apps.AppConfig",
         'ambition_labs.apps.AppConfig',
         'ambition_lists.apps.AppConfig',
         'ambition_reference.apps.AppConfig',
