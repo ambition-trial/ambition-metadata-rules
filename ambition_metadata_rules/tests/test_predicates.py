@@ -35,7 +35,7 @@ class TestPredicates(AmbitionTestCaseMixin, TestCase):
         site = Site.objects.get_current()
         RandomizationList.objects.update(site_name=site.name, subject_identifier=None)
         rando = (
-            RandomizationList.objects.filter(site_name=site.name, drug_assignment=arm)
+            RandomizationList.objects.filter(site_name=site.name, assignment=arm)
             .order_by("sid")
             .first()
         )
