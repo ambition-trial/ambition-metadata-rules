@@ -6,17 +6,16 @@ from ambition_visit_schedule import DAY1, DAY3, DAY5
 from arrow.arrow import Arrow
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from decimal import Decimal
 from django.apps import apps as django_apps
 from django.contrib.sites.models import Site
 from django.test import TestCase, tag
 from django.test.utils import override_settings
 from edc_reference import LongitudinalRefsets
 from edc_reference.tests import ReferenceTestHelper
-from edc_sites.utils import add_or_update_django_sites, get_site_id
+from edc_sites import add_or_update_django_sites, get_site_id
 
 from ..predicates import Predicates
-from _decimal import Decimal
-from pprint import pprint
 
 
 class TestPredicates(AmbitionTestCaseMixin, TestCase):
@@ -36,7 +35,7 @@ class TestPredicates(AmbitionTestCaseMixin, TestCase):
         site = Site.objects.get_current()
         RandomizationList.objects.update(site_name=site.name, subject_identifier=None)
         rando = (
-            RandomizationList.objects.filter(site_name=site.name, drug_assignment=arm)
+            RandomizationList.objects.filter(site_name=site.name, assignment=arm)
             .order_by("sid")
             .first()
         )
