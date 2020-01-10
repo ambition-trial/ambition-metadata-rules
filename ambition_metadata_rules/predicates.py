@@ -71,4 +71,5 @@ class Predicates(PredicateCollection):
 
     def func_require_qpcr_requisition(self, visit, **kwargs):
         site = Site.objects.get_current()
-        return site.name == "blantyre" or site.name == "gaborone"
+        # return site.name == "blantyre" or site.name == "gaborone"
+        return site.name in ["blantyre", "gaborone", "capetown"]

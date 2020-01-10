@@ -204,6 +204,6 @@ class TestPredicates(AmbitionTestCaseMixin, TestCase):
     def test_qpcr_24_requisition_site_eq_cape_town(self):
         pc = Predicates()
         self.update_randomization_list(CONTROL)
-        self.assertFalse(pc.func_require_qpcr_requisition(self.subject_visits[0]))
+        self.assertTrue(pc.func_require_qpcr_requisition(self.subject_visits[0]))
         self.update_randomization_list(SINGLE_DOSE)
-        self.assertFalse(pc.func_require_qpcr_requisition(self.subject_visits[0]))
+        self.assertTrue(pc.func_require_qpcr_requisition(self.subject_visits[0]))
